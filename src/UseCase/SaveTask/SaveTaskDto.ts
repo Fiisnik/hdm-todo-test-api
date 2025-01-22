@@ -5,5 +5,6 @@ export default class SaveTaskDto {
   tag: string;
   priority: string;
   createdAt?: Date; 
-  updatedAt?: Date; 
+  updatedAt?: Date;
+  userId: number; 
 }

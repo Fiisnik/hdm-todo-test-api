@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Task } from '@prisma/client';
 import { UseCase } from '../../index';
 import TaskRepository from '../../Repositories/TaskRepository';
@@ -16,27 +16,31 @@ export default class EditTaskUseCase
         throw new BadRequestException('Task ID is required for update');
       }
 
-      const existingTask = await this.taskRepository.findById(id);
-      if (!existingTask) {
-        throw new BadRequestException(`Task with ID ${id} does not exist`);
+      if (!dto.userId) {
+        throw new BadRequestException('User ID is required.');
       }
 
-      
+      const existingTask = await this.taskRepository.findById(id, dto.userId);
+      if (!existingTask) {
+        throw new BadRequestException(
+          `Task with ID ${id} does not exist or you are not authorized to edit it.`,
+        );
+      }
+
       if (!dto.name || dto.name.trim() === '') {
         throw new BadRequestException('The "name" field is required.');
       }
 
-     
       return await this.taskRepository.save({
         id: existingTask.id,
         name: dto.name,
         priority: dto.priority,
         tag: dto.tag,
-        description: dto.description ?? existingTask.description, 
-        updatedAt: new Date(), 
+        description: dto.description ?? existingTask.description,
+        updatedAt: new Date(),
       });
     } catch (error) {
-        throw new BadRequestException(error.message);
-      }
+      throw new BadRequestException(error.message);
+    }
   }
 }

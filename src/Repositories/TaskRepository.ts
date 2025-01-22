@@ -6,23 +6,23 @@ import { Prisma } from '@prisma/client';
 export default class TaskRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
-    return this.prisma.task.findMany();
-  }
-
-  async findById(id: number) {
-    return this.prisma.task.findUnique({
-      where: { id,
-
-      },
+  async findAll(userId: number) {
+    return this.prisma.task.findMany({
+      where: { userId },
     });
   }
 
-  async delete(id: number) {
+  async findById(id: number, userId: number) {
+    return this.prisma.task.findFirst({
+      where: { id, userId },
+    });
+  }
+
+  async delete(id: number, userId: number) {
+    const task = await this.findById(id, userId);
+    if (!task) throw new Error('Task not found or not authorized');
     return this.prisma.task.delete({
-      where: {
-        id,
-      },
+      where: { id },
     });
   }
 

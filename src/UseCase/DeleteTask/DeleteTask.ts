@@ -4,13 +4,13 @@ import TaskRepository from '../../Repositories/TaskRepository';
 
 @Injectable()
 export default class DeleteTask
-  implements UseCase<Promise<boolean>, [id: number]>
+  implements UseCase<Promise<boolean>, [id: number, userId: number]>
 {
   constructor(private readonly taskRepository: TaskRepository) {}
 
-  async handle(id: number) {
+  async handle(id: number, userId: number) {
     try {
-      await this.taskRepository.delete(id);
+      await this.taskRepository.delete(id,userId);
 
       return true;
     } catch (error) {

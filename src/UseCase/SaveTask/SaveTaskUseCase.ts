@@ -16,12 +16,17 @@ export default class SaveTaskUseCase
         throw new BadRequestException('The "name" field is required.');
       }
 
+      if (!dto.userId) {
+        throw new BadRequestException('The "userId" field is required.');
+      }
+
       const task = await this.taskRepository.save({
-        id: dto.id || undefined, 
+        id: dto.id || undefined,
         name: dto.name,
         description: dto.description ?? null,
         priority: dto.priority,
         tag: dto.tag,
+        userId: dto.userId,
       });
 
       return task;
