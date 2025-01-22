@@ -29,3 +29,25 @@ Content-Type: application/json
   "firstname": "John",
   "lastname": "Doe"
 }
+
+### register
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "fisnik@gmail.com",
+  "password": "123",
+  "firstname": "Jane",
+  "lastname": "Doe"
+}
+
+
+### login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "fisnik@gmail.com",
+  "password": "123"
+}
+

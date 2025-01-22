@@ -11,7 +11,6 @@ export default class SaveUserUseCase implements UseCase<Promise<User>, [dto: Sav
 
   async handle(dto: SaveUserDto): Promise<User> {
     try {
-      // Validation des champs obligatoires
       if (!dto.email || dto.email.trim() === '') {
         throw new BadRequestException('The "email" field is required.');
       }
@@ -25,13 +24,11 @@ export default class SaveUserUseCase implements UseCase<Promise<User>, [dto: Sav
         throw new BadRequestException('The "lastname" field is required.');
       }
 
-      // Hachage du mot de passe si c'est un nouvel utilisateur
       let hashedPassword = dto.password;
       if (!dto.id) {
         hashedPassword = await bcrypt.hash(dto.password, 10);
       }
 
-      // Sauvegarde de l'utilisateur
       const user = await this.userRepository.save({
         id: dto.id || undefined, // Création si l'id n'existe pas, sinon mise à jour
         email: dto.email,

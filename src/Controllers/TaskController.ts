@@ -38,4 +38,6 @@ export default class TaskController {
   async delete(@Param('id') id: string) {
     return (await this.useCaseFactory.create(DeleteTask)).handle(Number(id));
   }
+
+  
 }
