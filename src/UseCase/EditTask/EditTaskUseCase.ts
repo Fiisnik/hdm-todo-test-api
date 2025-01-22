@@ -30,6 +30,8 @@ export default class EditTaskUseCase
       return await this.taskRepository.save({
         id: existingTask.id,
         name: dto.name,
+        priority: dto.priority,
+        tag: dto.tag,
         description: dto.description ?? existingTask.description, 
         updatedAt: new Date(), 
       });

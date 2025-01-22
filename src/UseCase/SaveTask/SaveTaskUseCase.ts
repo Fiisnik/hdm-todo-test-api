@@ -19,7 +19,9 @@ export default class SaveTaskUseCase
       const task = await this.taskRepository.save({
         id: dto.id || undefined, 
         name: dto.name,
-        description: dto.description ?? null, 
+        description: dto.description ?? null,
+        priority: dto.priority,
+        tag: dto.tag,
       });
 
       return task;
